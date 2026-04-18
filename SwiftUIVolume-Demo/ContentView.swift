@@ -15,13 +15,12 @@ struct ContentView: View {
         VStack {
             Text("Volume: \(volume)")
             Slider(value: $volume)
-                .animation(nil, value: volume)
                 .systemVolume($volume)
         }
         .padding()
         
         .onAppear {
-            // If you want to change the system volume when the view appeared, you should await few seconds before you set.
+            // If you want to change the system volume when the view appeared, you should await few seconds for the MPVolumeView to load before you set.
             Task {
                 try? await Task.sleep(nanoseconds: 1_000_000)
                 volume = 0.05
