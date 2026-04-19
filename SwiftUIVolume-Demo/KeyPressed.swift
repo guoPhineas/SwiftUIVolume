@@ -26,7 +26,7 @@ struct ContentView: View {
                 try? await Task.sleep(nanoseconds: 1_000_000_000)
                 button = .unknown
             }
-        }, volumeFixed: false)
+        }, volumeFixed: true)
         
         .padding()
     }
