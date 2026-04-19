@@ -8,14 +8,24 @@
 import SwiftUI
 import AVFoundation
 
-private struct MPVolume: ViewModifier {
+struct MPVolume: ViewModifier {
     @Binding var volume: Float
     func body(content: Content) -> some View {
-        ZStack{
+        
+        if #available(iOS 15.0, *) {
             content
-            MPVolumeViewRepresentable(volume: $volume)
-                .opacity(0.01)
-                .frame(width: 0, height: 0)
+                .background{
+                    MPVolumeViewRepresentable(volume: $volume)
+                        .opacity(0.01)
+                        .frame(width: 0, height: 0)
+                }
+        } else {
+            ZStack {
+                content
+                MPVolumeViewRepresentable(volume: $volume)
+                    .opacity(0.01)
+                    .frame(width: 0, height: 0)
+            }
         }
     }
     

@@ -1,10 +1,11 @@
 # SwiftUIVolume
 
-SwiftUIVolume is a Swift Package that allows you to get or set the system volume in your SwiftUI app. This package is designed for iOS and works only on real devices (not in the simulator).
+SwiftUIVolume is a Swift Package that allows you to get or set the system volume and observe if the volume button was pressed in your SwiftUI app. This package is designed for iOS and works only on real devices (not in the simulator).
 
 ## Features
 - Get the current system volume
 - Set the system volume programmatically
+- Observe if the volume button was pressed
 - Easy integration with SwiftUI
 
 ## Important Notes
@@ -35,6 +36,8 @@ import SwiftUIVolume
 
 Use the provided API to get or set the system volume. See the demo app for a complete example.
 
+### Volume change and observation
+
 ```swift
 struct ContentView: View {
     @State var volume: Float = 0
@@ -43,10 +46,16 @@ struct ContentView: View {
         VStack {
             Text("Volume: \(volume)")
             Slider(value: $volume)
-                .systemVolume($volume)
+            HStack(spacing: 20) {
+                Button("Set 20%"){
+                    volume = 0.20
+                }
+                Button("Set 50%"){
+                    volume = 0.50
+                }
+            }
         }
         .padding()
-        
         .onAppear {
             // If you want to change the system volume when the view appeared, you should await few seconds for the MPVolumeView to load before you set.
             Task {
@@ -54,6 +63,34 @@ struct ContentView: View {
                 volume = 0.05
             }
         }
+    }
+}
+```
+
+### Observes the volume button pressed
+
+```swift
+struct ContentView: View {
+    @State var button: VolumeChangeType = .unknown
+    var body: some View {
+        VStack {
+            if button == .down {
+                Text("Key down")
+            } else if (button == .up) {
+                Text("Key up")
+            } else {
+                Text("Wait")
+            }
+        }
+        .onVolumeButtonPressed({ type in
+            button = type
+            Task {
+                try? await Task.sleep(nanoseconds: 1_000_000_000)
+                button = .unknown
+            }
+        }, volumeFixed: false)
+        
+        .padding()
     }
 }
 ```

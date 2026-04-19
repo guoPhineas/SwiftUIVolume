@@ -8,15 +8,25 @@
 import SwiftUI
 import SwiftUIVolume
 
-struct ContentView: View {
+struct VolumeChange: View {
     // The initialization value is invalid, you should manually adjust it after the view appeared (like onAppeal below)
     @State var volume: Float = 0
     var body: some View {
         VStack {
             Text("Volume: \(volume)")
             Slider(value: $volume)
-                .systemVolume($volume)
+            HStack(spacing: 20) {
+                Button("Set 20%"){
+                    volume = 0.20
+                }
+                
+                Button("Set 50%"){
+                    volume = 0.50
+                }
+            }
         }
+        .systemVolume($volume)
+        
         .padding()
         
         .onAppear {

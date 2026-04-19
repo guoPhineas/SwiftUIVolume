@@ -11,7 +11,15 @@ import SwiftUI
 struct SwiftUIVolume_DemoApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TabView {
+                Tab("VolumeChange", systemImage: "") {
+                    VolumeChange()
+                }
+                Tab("KeyPressed", systemImage: "") {
+                    ContentView()
+                }
+            }
+
         }
     }
 }

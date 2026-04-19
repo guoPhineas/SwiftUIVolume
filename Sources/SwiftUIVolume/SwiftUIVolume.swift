@@ -60,8 +60,8 @@ struct MPVolumeViewRepresentable: UIViewRepresentable {
         private func startObservingSystemVolume() {
             guard (volumeObservation == nil) else { return }
             let audioSession = AVAudioSession.sharedInstance()
-            try? audioSession.setActive(true)
-            volumeObservation = audioSession.observe(\AVAudioSession.outputVolume, options: [.initial, .new, .prior]) { [weak self] session, _ in
+//            try? audioSession.setActive(true)
+            volumeObservation = audioSession.observe(\AVAudioSession.outputVolume, options: [.new, .prior, .old]) { [weak self] session, _ in
                 Task { @MainActor in
                     self?.parent.volume = session.outputVolume
                 }
